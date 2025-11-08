@@ -10,9 +10,9 @@ public class EnemyPatrolState : EnemyBaseState
 
     public override void Enter()
     {
-        agent.speed = 1;
+        agent.speed = 2;
         agent.isStopped = false;
-        animator.SetTrigger("Walking");
+        animator.SetBool("IsWalking", true);
 
         model.SetState(EnemyState.Patrol);
         float lastDistance = Mathf.Infinity;
@@ -32,7 +32,7 @@ public class EnemyPatrolState : EnemyBaseState
     {
         if (agent.remainingDistance < 1)
         {
-            if (_currentIndex >= brain.EnemyPatrolPoints.Count- 1)
+            if (_currentIndex >= brain.EnemyPatrolPoints.Count - 1)
             {
                 _currentIndex = 0;
             }
@@ -47,19 +47,17 @@ public class EnemyPatrolState : EnemyBaseState
 
         if (CanSeePlayer())
         {
-            brain.StateMachine.ChangeState(new EnemyChaseState(brain));
+            brain.StateMachine.ChangeState(brain.ChaseState);
         }
 
         if(IsDead())
         {
-            brain.StateMachine.ChangeState(new EnemyDeadState(brain));
+            brain.StateMachine.ChangeState(brain.DeadState);
         }
     }
 
     public override void Exit()
     {
-        animator.ResetTrigger("Walking");
-        agent.speed = 0;
-        agent.isStopped = true;
+        animator.SetBool("IsWalking", false);
     }
 }

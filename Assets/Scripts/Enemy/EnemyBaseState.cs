@@ -13,7 +13,7 @@ public abstract class EnemyBaseState : IState
 
     protected float visionDistance;
     protected float visionAngle;
-    protected float shootDistance;
+    protected float attackRange;
 
     protected EnemyBaseState(EnemyBrain brain)
     {
@@ -27,7 +27,7 @@ public abstract class EnemyBaseState : IState
 
         this.visionDistance = brain.VisionDistance;
         this.visionAngle = brain.VisionAngle;
-        this.shootDistance = brain.ShootDistance;
+        this.attackRange = brain.AttackRange;
     }
 
     public virtual void Enter() { }
@@ -49,7 +49,7 @@ public abstract class EnemyBaseState : IState
     public bool CanAttackPlayer()
     {
         Vector3 direction = target.position - transform.position;
-        if (direction.magnitude < shootDistance)
+        if (direction.magnitude < attackRange)
         {
             return true;
         }

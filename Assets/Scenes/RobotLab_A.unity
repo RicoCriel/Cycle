@@ -705,16 +705,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1091640139}
     - target: {fileID: 951069526993041367, guid: ea029abbbd7511d4a8b05fc8ad5c8515, type: 3}
+      propertyPath: _attackRange
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 951069526993041367, guid: ea029abbbd7511d4a8b05fc8ad5c8515, type: 3}
       propertyPath: _visionAngle
-      value: 30
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 951069526993041367, guid: ea029abbbd7511d4a8b05fc8ad5c8515, type: 3}
       propertyPath: _shootDistance
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 951069526993041367, guid: ea029abbbd7511d4a8b05fc8ad5c8515, type: 3}
       propertyPath: _visionDistance
-      value: 5
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 951069526993041367, guid: ea029abbbd7511d4a8b05fc8ad5c8515, type: 3}
       propertyPath: _patrolPoints.Array.size
@@ -794,11 +798,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5054934632908101992, guid: ea029abbbd7511d4a8b05fc8ad5c8515, type: 3}
       propertyPath: m_AngularSpeed
-      value: 200
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 5054934632908101992, guid: ea029abbbd7511d4a8b05fc8ad5c8515, type: 3}
       propertyPath: m_StoppingDistance
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -9,10 +9,9 @@ public class EnemyChaseState : EnemyBaseState
     public override void Enter()
     {
         model.SetState(EnemyState.Chase);
-        agent.speed = 8;
         agent.isStopped = false;
-
-        animator.SetTrigger("Running");
+        agent.speed = 8;
+        animator.SetBool("IsRunning", true);
     }
 
     public override void Update()
@@ -22,28 +21,25 @@ public class EnemyChaseState : EnemyBaseState
         targetPos.y = 0;
         transform.LookAt(targetPos);
 
-        if(agent.hasPath)
+        if (!CanSeePlayer())
         {
-            if (!CanSeePlayer())
-            {
-                brain.StateMachine.ChangeState(new EnemyPatrolState(brain));
-            }
-
-            if (CanAttackPlayer())
-            {
-                brain.StateMachine.ChangeState(new EnemyAttackState(brain));
-            }
+            brain.StateMachine.ChangeState(brain.PatrolState);
         }
 
-        if(IsDead())
+        if (CanAttackPlayer())
         {
-            brain.StateMachine.ChangeState(new EnemyDeadState(brain));
+            brain.StateMachine.ChangeState(brain.AttackState);
+        }
+
+        if (IsDead())
+        {
+            brain.StateMachine.ChangeState(brain.DeadState);
         }
     }
 
     public override void Exit()
     {
-        agent.speed = 0;
-        agent.isStopped = true;
+        animator.SetBool("IsRunning", false);
+
     }
 }
