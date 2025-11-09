@@ -34,7 +34,7 @@ public class Health : MonoBehaviour
 
         int oldHealth = CurrentHealth;
         CurrentHealth -= damageAmount;
-        OnHealthDecreased?.Invoke(damageAmount);
+        OnHealthDecreased?.Invoke(CurrentHealth);
 
         if (CurrentHealth <= 0 && oldHealth > 0)
             OnDeath?.Invoke();

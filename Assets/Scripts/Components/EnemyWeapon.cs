@@ -85,5 +85,9 @@ public class EnemyWeapon : MonoBehaviour
         {
             health.TakeDamage(_damage);
         }
+        else
+        {
+            Debug.Log("No Health Component Attached!");
+        }
     }
 }

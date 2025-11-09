@@ -225,7 +225,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: NEED KEYCARD
+  m_text: 'INTERACT [E] '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 76e80054a48db5c4582dcc5c11a4fcd1, type: 2}
   m_sharedMaterial: {fileID: 3972010220741140398, guid: 76e80054a48db5c4582dcc5c11a4fcd1, type: 2}

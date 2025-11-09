@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Weapon : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class Weapon : MonoBehaviour
     private Coroutine _spawnTrail;
 
     public LayerMask HitMask;
+
+    public UnityEvent<Vector3> OnEnemyHit;
 
     private void Awake()
     {
@@ -102,6 +105,7 @@ public class Weapon : MonoBehaviour
             foreach (var collider in hitObject)
             {
                 ApplyDamage(collider, hitPoint);
+                OnEnemyHit?.Invoke(hitPoint);
             }
         }
     }

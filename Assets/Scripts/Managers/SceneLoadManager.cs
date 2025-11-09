@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,12 +13,12 @@ public class SceneLoadManager : MonoBehaviour
 
     private void OnEnable()
     {
-        TimeView.OnTimeExpired += FadeAndLoadScene;
+        TimeView.OnTimeExpired += ReloadCurrentScene;
     }
 
     private void OnDisable()
     {
-        TimeView.OnTimeExpired -= FadeAndLoadScene;
+        TimeView.OnTimeExpired -= ReloadCurrentScene;
     }
 
 

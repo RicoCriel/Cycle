@@ -6,6 +6,17 @@ public class Keycard : MonoBehaviour
 {
     public UnityEvent OnKeycardCollected;
 
+    private void Awake()
+    {
+        OnKeycardCollected.AddListener(AddKeycardToInventory);
+    }
+
+    private void AddKeycardToInventory()
+    {
+        Inventory.Instance.IncreaseKeyCardCount();
+        AudioManager.Instance.PlayCollectFX();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
        if(other.TryGetComponent<FirstPersonController>(out var controller))

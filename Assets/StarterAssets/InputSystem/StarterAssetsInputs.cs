@@ -15,6 +15,7 @@ namespace StarterAssets
 		public bool jump;
 		public bool sprint;
 		public bool shoot;
+		public bool interact;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -24,6 +25,8 @@ namespace StarterAssets
 		public bool cursorInputForLook = true;
 
 		public UnityEvent OnShootPerformed;
+		public UnityEvent OnInteractPerformed;
+
 
 #if ENABLE_INPUT_SYSTEM
 		public void OnMove(InputValue value)
@@ -57,6 +60,16 @@ namespace StarterAssets
             if (pressed)
                 OnShootPerformed?.Invoke(); 
         }
+
+		public void OnInteract(InputValue value)
+		{
+			bool pressed = value.isPressed;
+			InteractInput(pressed);
+
+			if(pressed)
+				OnInteractPerformed?.Invoke();
+		}
+
 #endif
 
 
@@ -83,6 +96,11 @@ namespace StarterAssets
 		public void ShootInput(bool newShootState)
 		{
 			shoot = newShootState;
+		}
+
+		public void InteractInput(bool newInteractState)
+		{
+			interact = newInteractState;
 		}
 		
 		private void OnApplicationFocus(bool hasFocus)

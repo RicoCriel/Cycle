@@ -5,12 +5,16 @@ using System;
 
 public class HealthView : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _healthText;
-    public Action OnHealthChanged;
+    private TextMeshProUGUI _healthText;
 
     private void Awake()
     {
-        
+        _healthText = GetComponent<TextMeshProUGUI>();
+    }
+
+    public void SetText(int health)
+    {
+        _healthText.text = health.ToString();
     }
 
 }
