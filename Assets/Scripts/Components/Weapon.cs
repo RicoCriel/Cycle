@@ -6,12 +6,14 @@ public class Weapon : MonoBehaviour
     private const float raycastDistance = 100f; 
     private RaycastHit _hit;
     [SerializeField] private int _damage;
+    private LineRenderer _lineRenderer;
 
     public LayerMask HitLayer;
 
     private void Awake()
     {
         _camera = Camera.main;
+        _lineRenderer = GetComponent<LineRenderer>();
     }
 
     public void Shoot()
