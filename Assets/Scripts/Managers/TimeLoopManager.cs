@@ -3,6 +3,9 @@ using UnityEngine.Events;
 
 public class TimeLoopManager : MonoBehaviour
 {
+    [SerializeField] private GameObject _brokenTimeloop;
+    [SerializeField] private GameObject _fixedTimeloop;
+
     public static TimeLoopManager Instance;
     public int UnlockedTerminals;
     public int MaxTerminals = 3;
@@ -16,6 +19,8 @@ public class TimeLoopManager : MonoBehaviour
             Destroy(gameObject);
         }
         Instance = this;
+
+        OnTimeLoopBroken.AddListener(ShowFixedTimeLoop);
     }
 
     public void UnlockTerminal()
@@ -33,6 +38,12 @@ public class TimeLoopManager : MonoBehaviour
             if (timeView != null)
                 timeView.IsTimeLoopFixed = true;
         }
+    }
+
+    private void ShowFixedTimeLoop()
+    {
+        _brokenTimeloop.SetActive(false);
+        _fixedTimeloop.SetActive(true);
     }
 
 

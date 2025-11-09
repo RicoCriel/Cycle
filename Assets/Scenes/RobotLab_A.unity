@@ -315,6 +315,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35736c5a627e8024e8ba01b6bab73098, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimeLoopManager
+  _brokenTimeloop: {fileID: 561065151}
+  _fixedTimeloop: {fileID: 648959421}
   UnlockedTerminals: 0
   MaxTerminals: 3
   OnTimeLoopBroken:
@@ -1237,6 +1239,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31e1448bbc469064e89a752925fc2ea4, type: 3}
+--- !u!1 &561065151 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3165652264736840632, guid: 31e1448bbc469064e89a752925fc2ea4, type: 3}
+  m_PrefabInstance: {fileID: 561065150}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &578707748
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1660,6 +1667,11 @@ PrefabInstance:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2652676332930285270, guid: e766abad0f422bd48bdee3e0942c3c71, type: 3}
   m_PrefabInstance: {fileID: 703943647704628892}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &648959421 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6465249256851274223, guid: d5774d459f0f43d4591f34994be1404e, type: 3}
+  m_PrefabInstance: {fileID: 1963437252}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &730474428
 PrefabInstance:
