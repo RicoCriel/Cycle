@@ -2,7 +2,11 @@ using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
+    [SerializeField] private float _startTime;
+
     public static TimeManager Instance;
+
+    public float StartTime { get {return _startTime; } }
 
     private void Awake()
     {

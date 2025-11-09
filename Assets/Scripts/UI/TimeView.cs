@@ -9,6 +9,10 @@ public class TimeView : MonoBehaviour
 
     public static event Action<string> OnTimeExpired;
 
+    //private void Awake()
+    //{
+    //    _remainingTime = TimeManager.Instance.StartTime;
+    //}
 
     private void Update()
     {

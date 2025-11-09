@@ -40,6 +40,5 @@ public class EnemyChaseState : EnemyBaseState
     public override void Exit()
     {
         animator.SetBool("IsRunning", false);
-
     }
 }
