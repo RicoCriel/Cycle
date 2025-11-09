@@ -9,11 +9,6 @@ public class TimeView : MonoBehaviour
 
     public static event Action<string> OnTimeExpired;
 
-    //private void Awake()
-    //{
-    //    _remainingTime = TimeManager.Instance.StartTime;
-    //}
-
     private void Update()
     {
         if (_remainingTime > 0)
@@ -23,7 +18,7 @@ public class TimeView : MonoBehaviour
         else if(_remainingTime < 0)
         {
             _remainingTime = 0;
-            OnTimeExpired?.Invoke("RobotLab_B");
+            OnTimeExpired?.Invoke("RobotLab_A");
         }
         int minutes = Mathf.FloorToInt(_remainingTime / 60);
         int seconds = Mathf.FloorToInt(_remainingTime % 60);

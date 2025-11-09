@@ -1,7 +1,8 @@
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEditor.SearchService;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneLoadManager : MonoBehaviour
 {
@@ -44,6 +45,20 @@ public class SceneLoadManager : MonoBehaviour
     {
         if(_sceneLoader == null)
         {
+            _sceneLoader = StartCoroutine(SceneFadeIn(sceneName, _fadeDuration));
+        }
+        else
+        {
+            StopCoroutine(_sceneLoader);
+        }
+    }
+
+    public void ReloadCurrentScene()
+    {
+        if (_sceneLoader == null)
+        {
+            var scene = SceneManager.GetActiveScene();
+            string sceneName = scene.name;
             _sceneLoader = StartCoroutine(SceneFadeIn(sceneName, _fadeDuration));
         }
         else

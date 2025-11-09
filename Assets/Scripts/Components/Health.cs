@@ -25,7 +25,7 @@ public class Health : MonoBehaviour
         _currentHealth = _maxHealth;
     }
 
-    public void DecreaseHealth(int damageAmount)
+    public void TakeDamage(int damageAmount)
     {
         if (_isGod)
         {

@@ -1,34 +1,122 @@
+using System.Collections;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
     private Camera _camera;
-    private const float raycastDistance = 100f; 
-    private RaycastHit _hit;
     [SerializeField] private int _damage;
-    private LineRenderer _lineRenderer;
+    [SerializeField]
+    private Transform _bulletSpawnPoint;
+    [SerializeField]
+    private ParticleSystem _impactParticleSystem;
+    [SerializeField]
+    private TrailRenderer _bulletTrail;
+    [SerializeField]
+    private float _shootDelay;
+    [SerializeField]
+    private float _bulletSpeed;
 
-    public LayerMask HitLayer;
+    private Animator _animator;
+    private float _lastShootTime;
+
+    private Coroutine _resetState;
+    private Coroutine _spawnTrail;
+
+    public LayerMask HitMask;
 
     private void Awake()
     {
+        _animator = GetComponent<Animator>();
         _camera = Camera.main;
-        _lineRenderer = GetComponent<LineRenderer>();
     }
 
     public void Shoot()
     {
-        Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        if (Time.time < _lastShootTime + _shootDelay)
+            return;
 
-        if (Physics.Raycast(ray, out _hit, raycastDistance, HitLayer))
+        _lastShootTime = Time.time;
+
+        _animator.SetBool("IsShooting", true);
+
+        if(_resetState  != null)
         {
-            if(_hit.transform.TryGetComponent<Health>(out Health health))
+            StopCoroutine(_resetState);
+        }
+        _resetState = StartCoroutine(ResetShootState());
+
+        Vector3 direction = GetDirection();
+
+        if (Physics.Raycast(_bulletSpawnPoint.position, direction, out RaycastHit hit, float.MaxValue, HitMask))
+        {
+            TrailRenderer trail = Instantiate(_bulletTrail, _bulletSpawnPoint.position, Quaternion.identity);
+            if(_spawnTrail != null)
             {
-                health.DecreaseHealth(_damage);
+                StopCoroutine(_spawnTrail);
             }
-            //Debug.Log("Hit " + _hitInfo.collider.name + " at point " + _hitInfo.point);
+            _spawnTrail = StartCoroutine(SpawnTrail(trail, hit.point, hit.normal, true));
+        }
+        else
+        {
+            TrailRenderer trail = Instantiate(_bulletTrail, _bulletSpawnPoint.position, Quaternion.identity);
+            if (_spawnTrail != null)
+            {
+                StopCoroutine(_spawnTrail);
+            }
+            _spawnTrail = StartCoroutine(SpawnTrail(trail, _bulletSpawnPoint.position + direction * 100f, Vector3.zero, false));
+        }
+        _lastShootTime = 0;
+    }
+
+    private Vector3 GetDirection()
+    {
+        Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        Vector3 direction = ray.direction;
+        return direction.normalized;
+    }
+
+    private IEnumerator SpawnTrail(TrailRenderer trail, Vector3 hitPoint, Vector3 hitNormal, bool hasMadeImpact)
+    {
+        Vector3 startPosition = trail.transform.position;
+        float distance = Vector3.Distance(trail.transform.position, hitPoint);
+        float remainingDistance = distance;
+
+        while (remainingDistance > 0)
+        {
+            trail.transform.position = Vector3.Lerp(startPosition, hitPoint, 1 - (remainingDistance / distance));
+
+            remainingDistance -= _bulletSpeed * Time.deltaTime;
+
+            yield return null;
+        }
+        if(trail != null)
+        {
+            trail.transform.position = hitPoint;
         }
 
-        //Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.yellow, 1f);
+        if (hasMadeImpact)
+        {
+            Instantiate(_impactParticleSystem, hitPoint, Quaternion.LookRotation(hitNormal));
+
+            var hitObject = Physics.OverlapSphere(hitPoint, 1f, HitMask);
+            foreach (var collider in hitObject)
+            {
+                ApplyDamage(collider, hitPoint);
+            }
+        }
+    }
+
+    private IEnumerator ResetShootState()
+    {
+        yield return new WaitForSeconds(_shootDelay);
+        _animator.SetBool("IsShooting", false);
+    }
+
+    private void ApplyDamage(Collider collider, Vector3 hitPoint)
+    {
+        if (collider.TryGetComponent(out Health health))
+        {
+            health.TakeDamage(_damage);
+        }
     }
 }

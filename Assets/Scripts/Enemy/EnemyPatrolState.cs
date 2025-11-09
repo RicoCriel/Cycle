@@ -1,11 +1,14 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyPatrolState : EnemyBaseState
 {
-    private int _currentIndex = -1;
+    private Vector3 _patrolCenter;
+    private float _timeUntilNextPatrol;
 
     public EnemyPatrolState(EnemyBrain brain) : base(brain)
     {
+        _patrolCenter = brain.Transform.position; 
     }
 
     public override void Enter()
@@ -13,46 +16,39 @@ public class EnemyPatrolState : EnemyBaseState
         agent.speed = 2;
         agent.isStopped = false;
         animator.SetBool("IsWalking", true);
-
         model.SetState(EnemyState.Patrol);
-        float lastDistance = Mathf.Infinity;
-        for (int i = 0; i < brain.EnemyPatrolPoints.Count; i++)
-        {
-            Transform nextWayPoint = brain.EnemyPatrolPoints[i];
-            float distance = Vector3.Distance(transform.position, nextWayPoint.transform.position);
-            if (distance < lastDistance)
-            {
-                _currentIndex = i - 1;
-                lastDistance = distance;
-            }
-        }
+
+        SetRandomDestination();
     }
 
     public override void Update()
     {
-        if (agent.remainingDistance < 1)
+        // If we've reached our destination or it's taking too long, get a new one
+        if (agent.remainingDistance < 0.5f || agent.pathStatus != NavMeshPathStatus.PathComplete)
         {
-            if (_currentIndex >= brain.EnemyPatrolPoints.Count - 1)
-            {
-                _currentIndex = 0;
-            }
-            else
-            {
-                _currentIndex++;
-            }
-
-            agent.SetDestination(brain.EnemyPatrolPoints[_currentIndex].transform.position);
+            SetRandomDestination();
         }
-
 
         if (CanSeePlayer())
         {
             brain.StateMachine.ChangeState(brain.ChaseState);
         }
 
-        if(IsDead())
+        if (IsDead())
         {
             brain.StateMachine.ChangeState(brain.DeadState);
+        }
+    }
+
+    private void SetRandomDestination()
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * brain.PatrolRadius;
+        randomDirection.y = 0; 
+        Vector3 randomPosition = _patrolCenter + randomDirection;
+
+        if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, brain.PatrolRadius, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
         }
     }
 
@@ -60,4 +56,6 @@ public class EnemyPatrolState : EnemyBaseState
     {
         animator.SetBool("IsWalking", false);
     }
+
+
 }
